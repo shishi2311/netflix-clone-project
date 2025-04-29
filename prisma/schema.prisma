@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js" 
+  //  This tells Prisma to generate a JavaScript/TypeScript client for database queries.
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+  // Defines the MongoDB database connection, with the URL coming from environment variables (.env file).
+}
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId  // This is the primary key, with a unique auto-generated value.
+  name String? //user name 
+  email String? @unique //user email
+  emailVerified DateTime? //tracks email verification
+  hashedPassword String? //hashed pass
+  createdAt DateTime @default(now()) //tracks creation time
+  updatedAt DateTime @updatedAt //tracks last update time
+  favoriteIds String[] @db.ObjectId //users favourite movies
+  sessions Session[] //user sessions one to many relp
+  accounts Account[] //user accounts one to many relp
+  image String? //user image
+  
+}
+model Account{
+  id String @id @default(auto()) @map("_id") @db.ObjectId //account id
+  userId String @db.ObjectId // refrence user id
+  type String //account type
+  provider String //account provider google git
+  providerAccountId String //unique provider id
+  refresh_token String? @db.String //stores oauth refresh token
+  access_token String? @db.String //stores oauth access token
+  expires_at  Int? //stores oauth token expiry
+  token_type String? //stores oauth token type
+  scope String? //permissiom
+  id_token String? @db.String //
+  session_state String? //session state
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) //connects account to user
+
+  @@unique([provider, providerAccountId]) //unique constraint
+}
+
+model Session{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String @unique //session token
+  userId String @db.ObjectId// refrence user id
+  expires DateTime //session expiry
+
+  user User @relation(fields:[userId], references:[id], onDelete: Cascade) //connects session to user
+
+}
+model verificationToken{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String //unique identifier
+  token String @unique //verification token
+  expires DateTime //expiry time
+
+  @@unique([identifier, token])
+}
+model Movie{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String
+  videoUrl String
+  thumbnailUrl String
+  genre  String?
+  duration String
+  
+}
