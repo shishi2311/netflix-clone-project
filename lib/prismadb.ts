@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 // @ts-ignore
-const client = global.prismadb || new PrismaClient({
+const client = global?.prismadb || new PrismaClient({
     log: [
         {
             emit: 'event',
