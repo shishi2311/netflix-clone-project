@@ -8,7 +8,8 @@ import { BiChevronDown } from "react-icons/bi";
   
 
 interface movieCardProps {
-    data: Record<string, any>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: Record <string, any>;
 }
 
 const Moviecard: React.FC<movieCardProps> = ({ data }) => {

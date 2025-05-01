@@ -4,7 +4,7 @@ import { useRouter  } from "next/router";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
 
-const wacth = () => {
+const Watch = () => {
     const router = useRouter();
     const { movieId } = router.query;
 
@@ -47,4 +47,4 @@ const wacth = () => {
     )
 }
 
-export default wacth;
+export default Watch;

@@ -5,7 +5,10 @@ import Moviecard from "./Moviecard";
 
 
 interface MovieListProps {
-    data: Record<string, any>[];
+    data: {
+        id: string | number;
+        [key: string]: unknown;
+    }[];
     title: string;
 }
 
